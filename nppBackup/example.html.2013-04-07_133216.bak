@@ -1,0 +1,117 @@
+<html>
+  <head>
+    <style>
+		#leap-motion-notify {
+			position: fixed;
+			top: 0;
+			right: 0;
+			background: green;
+			width: 25px;
+			height: 25px;
+			z-index: 9999999999;
+		}
+    </style>
+	
+    <title>Leap Motion Gesture Test</title>
+	
+	<!-- leapJS -->
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="lib/leap.js"></script>
+
+	
+	<!-- objects -->
+	<script src="leapmotion.js"></script>
+	<script src="detector.js"></script>
+	<script src="gesture.js"></script>
+	<script src="point.js"></script>
+  </head>
+  <body>
+  
+  </body>
+  <script>
+		
+		/** W */
+		var points1 = new Array(
+			new Point(0, 50, 0),
+			new Point(20, 0, 0),
+			new Point(40, 25, 0),
+			new Point(60, 0, 0),
+			new Point(80, 50, 0)	
+		)
+		
+		/** M */
+		var points2 = new Array(
+			new Point(0, 0, 0),
+			new Point(20, 50, 0),
+			new Point(40, 25, 0),
+			new Point(60, 50, 0),
+			new Point(80, 0, 0)
+		)
+		
+		/** left to right */
+		var points3 = new Array(
+			new Point(0, 0, 0),
+			new Point(250, 0, 0)
+		)	
+		
+		/** right to left */
+		var points4 = new Array(
+			new Point(250, 0, 0),
+			new Point(0, 0, 0)
+		)
+		
+		/** down to top */
+		var points5 = new Array(
+			new Point(0, 0, 0),
+			new Point(0, 250, 0)
+		)	
+		
+		/** top to down */
+		var points6 = new Array(
+			new Point(0, 250, 0),
+			new Point(0, 0, 0)
+		)
+		
+		
+		var symbol1 = new Gesture('W', points1, function() {
+			alert('W')	
+		})
+		
+		var symbol2 = new Gesture('M', points2, function() {
+			alert('M')
+		})
+		
+		var symbol3 = new Gesture('left to right', points3, function() {
+			alert('left to right')
+		})
+		
+		var symbol4 = new Gesture('right to left', points4, function() {
+			alert('right to left')
+		})
+		
+		var symbol5 = new Gesture('down to top', points5, function() { })
+		var symbol6 = new Gesture('top to down', points6, function() { })
+		
+		var detector = new Detector()
+		
+		detector.addGesture(symbol1)
+		detector.addGesture(symbol2)
+		detector.addGesture(symbol3)
+		detector.addGesture(symbol4)
+		detector.addGesture(symbol5)
+		detector.addGesture(symbol6)
+		
+		detector.setStartPointCallback(function() { 
+			$('#leap-motion-notify').remove()
+			$('body').prepend('<div id="leap-motion-notify"></div>')
+			$('#leap-motion-notify').delay(1000).fadeOut()
+			
+		})
+		
+		var leap = new LeapMotion(detector);
+		
+		Leap.loop(function(frame) {
+			leap.frameAction(frame)
+		})
+  </script>
+</html>
